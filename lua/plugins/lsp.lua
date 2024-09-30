@@ -31,6 +31,7 @@ return {
                     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                     ['<A-Esc>'] = cmp.mapping.complete(),
+                    ['C-Space'] = cmp.mapping.complete(),
                     -- ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                     -- ['<C-d>'] = cmp.mapping.scroll_docs(4),
                 }),
@@ -100,6 +101,17 @@ return {
                     -- it applies to every language server without a "custom handler"
                     function(server_name)
                         require('lspconfig')[server_name].setup({})
+                    end,
+                    ['eslint'] = function()
+                        require('lspconfig').eslint.setup({
+                            on_attach = function(client, bufnr)
+                                vim.api.nvim_create_autocmd('BufWritePre', {
+                                    pattern = { '*.tsx', '*.ts', '*.jsx', '*.js' },
+                                    command = 'silent! EslintFixAll',
+                                    group = vim.api.nvim_create_augroup('MyAutocmdsJavaScripFormatting', {}),
+                                })
+                            end,
+                        })
                     end,
                 }
             })
