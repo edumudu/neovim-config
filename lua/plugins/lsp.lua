@@ -1,14 +1,30 @@
+vim.lsp.config("*", {
+  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  on_attach = function()
+    vim.keymap.set("n", "<leader>vws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", opts)
+    vim.keymap.set("n", "<leader>vd", "<cmd>lua vim.lsp.diagnostic.open_float()<CR>", opts)
+    vim.keymap.set("n", "<leader>vca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+    vim.keymap.set("n", "<leader>vrr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+    vim.keymap.set("n", "<leader>vrn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+    vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+
+    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+    -- vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts) - use default gri
+    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+    -- vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts) - use default grr
+    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+    -- vim.keymap.set('n', 'mic', '<cmd>lua vim.lsp.buf.rename()<cr>', opts) - use default grn
+    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+  end,
+})
+
 return {
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v4.x',
-        lazy = true,
-        config = false,
-    },
-    {
-        'williamboman/mason.nvim',
-        lazy = false,
-        config = true,
+      "mason-org/mason.nvim",
+      opts = {}
     },
 
     -- Autocompletion
@@ -45,75 +61,20 @@ return {
 
     -- LSP
     {
-        'neovim/nvim-lspconfig',
-        cmd = {'LspInfo', 'LspInstall', 'LspStart'},
-        event = {'BufReadPre', 'BufNewFile'},
+        'mason-org/mason-lspconfig.nvim',
+        opts = {
+          ensure_installed = {
+            "ts_ls",
+            "eslint",
+            "lua_ls",
+            "rust_analyzer"
+          },
+        },
         dependencies = {
             {'hrsh7th/cmp-nvim-lsp'},
-            {'williamboman/mason.nvim'},
-            {'williamboman/mason-lspconfig.nvim'},
+            { "mason-org/mason.nvim", opts = {} },
+            {"neovim/nvim-lspconfig"},
         },
-        config = function()
-            local lsp_zero = require('lsp-zero')
-
-            -- lsp_attach is where you enable features that only work
-            -- if there is a language server active in the file
-            local lsp_attach = function(client, bufnr)
-                local opts = {buffer = bufnr}
-
-                vim.keymap.set("n", "<leader>vws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", opts)
-                vim.keymap.set("n", "<leader>vd", "<cmd>lua vim.lsp.diagnostic.open_float()<CR>", opts)
-                vim.keymap.set("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
-                vim.keymap.set("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-                vim.keymap.set("n", "<leader>vca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-                vim.keymap.set("n", "<leader>vrr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-                vim.keymap.set("n", "<leader>vrn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-                vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-
-                vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-                vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-                vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-                vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-                vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-                vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-                vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-                vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-                vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-                vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-            end
-
-            lsp_zero.extend_lspconfig({
-                sign_text = true,
-                lsp_attach = lsp_attach,
-                capabilities = require('cmp_nvim_lsp').default_capabilities()
-            })
-
-            require('mason-lspconfig').setup({
-                ensure_installed = {
-                    'ts_ls',
-                    'eslint',
-                    'lua_ls',
-                    'rust_analyzer'
-                },
-                handlers = {
-                    -- this first function is the "default handler"
-                    -- it applies to every language server without a "custom handler"
-                    function(server_name)
-                        require('lspconfig')[server_name].setup({})
-                    end,
-                    ['eslint'] = function()
-                        require('lspconfig').eslint.setup({
-                            on_attach = function(client, bufnr)
-                                vim.api.nvim_create_autocmd('BufWritePre', {
-                                    pattern = { '*.tsx', '*.ts', '*.jsx', '*.js' },
-                                    command = 'silent! EslintFixAll',
-                                    group = vim.api.nvim_create_augroup('MyAutocmdsJavaScripFormatting', {}),
-                                })
-                            end,
-                        })
-                    end,
-                }
-            })
-        end
     }
 }
+

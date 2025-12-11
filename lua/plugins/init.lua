@@ -12,5 +12,10 @@ return {
         end
 
     },
-    { "rose-pine/neovim", name = "rose-pine" }
+    { "rose-pine/neovim", name = "rose-pine" },
+    {
+      "OXY2DEV/markview.nvim",
+      branch = "main",
+      lazy = false
+    }
 }
