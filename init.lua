@@ -39,5 +39,5 @@ else
     require("edumudu")
     require("config.lazy")
 
-    vim.cmd("colorscheme rose-pine")
+    vim.cmd("colorscheme tokyonight-moon")
 end

@@ -1,23 +1,22 @@
 vim.lsp.config("*", {
   capabilities = vim.lsp.protocol.make_client_capabilities(),
   on_attach = function()
-    vim.keymap.set("n", "<leader>vws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", opts)
-    vim.keymap.set("n", "<leader>vd", "<cmd>lua vim.lsp.diagnostic.open_float()<CR>", opts)
-    vim.keymap.set("n", "<leader>vca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-    vim.keymap.set("n", "<leader>vrr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-    vim.keymap.set("n", "<leader>vrn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-    vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+    vim.keymap.set("n", "<leader>vws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", { desc = "Search workspace symbols" })
+    vim.keymap.set("n", "<leader>vd", "<cmd>lua vim.lsp.diagnostic.open_float()<CR>", { desc = "Show line diagnostics" })
+    vim.keymap.set("n", "<leader>vca", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Show code actions" })
+    -- vim.keymap.set("n", "<leader>vrr", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Show references" }) - use default grr
+    -- vim.keymap.set("n", "<leader>vrn", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename symbol" }) - use default grn
+    vim.keymap.set("n", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "Show signature help" }) 
 
-    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', { desc = "Show hover information" })
+    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', { desc = "Go to definition" })
+    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', { desc = "Go to declaration" })
     -- vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts) - use default gri
-    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', { desc = "Go to type definition" })
     -- vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts) - use default grr
-    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', { desc = "Show signature help" })
     -- vim.keymap.set('n', 'mic', '<cmd>lua vim.lsp.buf.rename()<cr>', opts) - use default grn
-    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', { desc = "Format code" })
   end,
 })
 
