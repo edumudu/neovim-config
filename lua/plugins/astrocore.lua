@@ -76,6 +76,7 @@ return {
 
         ["<C-u>"] = { "<C-u>zz", desc = "Scroll up and center" },
         ["<C-d>"] = { "<C-d>zz", desc = "Scroll down and center" },
+        ["<leader>lf"] = { function() vim.lsp.buf.format({ async = true }) end, desc = "Format File" },
 
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
