@@ -7,4 +7,7 @@ return {
   { import = "astrocommunity.pack.typescript" },
   { import = "astrocommunity.recipes.vscode" },
   { import = "astrocommunity.recipes.picker-lsp-mappings" },
+
+  -- Ai Completion
+  { import = "astrocommunity.recipes.ai" },
 }
