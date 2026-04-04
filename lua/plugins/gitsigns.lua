@@ -7,4 +7,10 @@ return {
       current_line_blame = true,
     },
   },
+  {
+    "chojs23/ec",
+    keys = {
+      { "<leader>ge", ":Ec<CR>", desc = "Open ec" },
+    },
+  },
 }
