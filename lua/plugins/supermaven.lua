@@ -1,6 +1,6 @@
-local canUserSupermaven = os.getenv "CAN_USE_SUPERMAEVEN" ~= nil
+local canUseSupermaven = os.getenv "CAN_USE_SUPERMAVEN" ~= nil
 
-if canUserSupermaven then return end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+if not canUseSupermaven then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 return {
   "supermaven-inc/supermaven-nvim",
