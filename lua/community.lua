@@ -5,6 +5,9 @@ return {
   { import = "astrocommunity.pack.json" },
   { import = "astrocommunity.pack.html-css" },
   { import = "astrocommunity.pack.typescript" },
+  -- { import = "astrocommunity.pack.oxlint" },
+  { import = "astrocommunity.pack.eslint" },
+
   { import = "astrocommunity.recipes.vscode" },
   { import = "astrocommunity.recipes.picker-lsp-mappings" },
 
