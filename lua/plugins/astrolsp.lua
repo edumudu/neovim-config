@@ -15,6 +15,13 @@ return {
       disabled = {
         "vtsls", -- Let Eslint/Prettier/oxc whatever is configured to format the file alone
       },
+      filter = function(client)
+        -- When oxfmt is attached to the buffer, it is the only formatter allowed;
+        -- in projects without oxfmt, other servers (jsonls, cssls, html, ...) still format.
+        local oxfmt_attached = next(vim.lsp.get_clients { name = "oxfmt", bufnr = vim.api.nvim_get_current_buf() })
+          ~= nil
+        return not oxfmt_attached or client.name == "oxfmt"
+      end,
     },
   },
 }
