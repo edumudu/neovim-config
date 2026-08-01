@@ -76,7 +76,7 @@ return {
 
         ["<C-u>"] = { "<C-u>zz", desc = "Scroll up and center" },
         ["<C-d>"] = { "<C-d>zz", desc = "Scroll down and center" },
-        ["<leader>lf"] = { function() vim.lsp.buf.format({ async = true }) end, desc = "Format File" },
+        ["<leader>lf"] = { function() vim.lsp.buf.format { async = true } end, desc = "Format File" },
 
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
@@ -84,6 +84,25 @@ return {
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+
+        ["<Leader>fl"] = {
+          function()
+            require("telescope.builtin").live_grep {
+              vimgrep_arguments = {
+                "rg",
+                "--color=never",
+                "--no-heading",
+                "--with-filename",
+                "--line-number",
+                "--column",
+                "--smart-case",
+                "--fixed-strings", -- The magic literal flag
+              },
+              prompt_title = "Live Grep (Literal)",
+            }
+          end,
+          desc = "Find words (Literal/Exact)",
+        },
       },
 
       -- v = {
